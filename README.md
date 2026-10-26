@@ -1,43 +1,38 @@
-# Astro Starter Kit: Minimal
+# パルティーレ博多ホテル
+
+福岡市中央区春吉のホテルを紹介するAstro製のLPです。GSAP・Lenisを使い、全画面ヒーロー、客室写真、料金、サービス、アクセスを構成しています。
+
+## 開発
+
+package.jsonのenginesを満たすNode.jsを使用してください。
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev -- --background
+npm run astro -- dev status
+npm run astro -- dev logs
+npm run astro -- dev stop
+npm run build
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 更新する場所
 
-## 🚀 Project Structure
+- `src/data/hotel.ts`：ホテル情報・料金・サービス料金・地図の検索住所
+- `src/data/room-images.json`：掲載写真と元ファイルの対応
+- `src/components/`：各セクション
+- `src/styles/global.css`：配色・レイアウト・レスポンシブ表示
+- `src/scripts/main.ts`：ヒーロー・客室ギャラリー・メニュー・スクロール演出
+- `docs/lp-design-plan.md`：制作計画と生成画像のプロンプト
+- `docs/implementation-notes.md`：実装内容・確認結果・未設定項目
 
-Inside of your Astro project, you'll see the following folders and files:
+## 画像を作り直す
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```sh
+npm run assets:prepare
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+`src/assets` の原本から `public/images` のWebPとサムネイルを生成します。HEIC形式の原本の変換には、PATH上のFFmpegを使用します。原本は上書きしません。確認用の一覧画像と一時変換画像はGit対象外の `.preview` に作成します。
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+ヒーローは実際の外観写真を参照した生成画像です。客室とアクセスの外観は実写を使用しています。
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+オンライン予約先と本番URLは未設定です。現時点では電話問い合わせを使用します。

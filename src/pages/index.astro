@@ -1,16 +1,21 @@
 ---
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Rooms from '../components/Rooms.astro';
+import Price from '../components/Price.astro';
+import Services from '../components/Services.astro';
+import Access from '../components/Access.astro';
+import Icon from '../components/Icon.astro';
+import {hotel} from '../data/hotel';
+import '../styles/global.css';
+const description='福岡・春吉のパルティーレ博多ホテル。キャナルシティ博多まで徒歩3分、天神南駅・櫛田神社前駅から徒歩約8分。6室の客室写真、宿泊料金、お荷物預かりや駐車場などのご案内。';
 ---
-
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<!doctype html><html lang="ja"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /><meta name="description" content={description} /><meta name="theme-color" content="#f5f2ec" /><link rel="icon" type="image/svg+xml" href="/favicon.svg" /><link rel="preload" as="image" href="/images/hero/exterior.webp" fetchpriority="high" /><meta property="og:type" content="website" /><meta property="og:locale" content="ja_JP" /><meta property="og:title" content={`${hotel.name}｜春吉から、福岡を歩く。`} /><meta property="og:description" content={description} /><title>{hotel.name}｜春吉から、福岡を歩く。</title></head><body>
+<Header /><main id="main"><Hero />
+<section id="intro" class="intro section-pad"><div class="wrap"><div class="intro-copy" data-reveal><p class="eyebrow">A STAY IN HARUYOSHI, FUKUOKA</p><div class="intro-columns"><h2>街を歩く時間も、<br />くつろぐ時間も。</h2><div><p>キャナルシティ博多まで、歩いて3分。<br />天神南駅と櫛田神社前駅からも、歩いて約8分。</p><p>福岡市中央区・春吉にある<br />パルティーレ博多ホテル。<br />街を楽しむ旅の拠点に、お迎えします。</p></div></div></div><div class="walk-distances" data-reveal><a href="#access"><span>キャナルシティ博多</span><p>徒歩 <b>3</b><span>分</span></p><Icon name="arrow" /></a><a href="#access"><span>天神南駅</span><p>徒歩 約<b>8</b><span>分</span></p><Icon name="arrow" /></a><a href="#access"><span>櫛田神社前駅</span><p>徒歩 約<b>8</b><span>分</span></p><Icon name="arrow" /></a></div></div></section>
+<Rooms /><Price /><Services /><Access />
+<section class="contact section-pad" id="contact"><div class="wrap" data-reveal><p class="eyebrow">CONTACT</p><div class="contact-body"><h2>次の旅を、<br />春吉から。</h2><div><p>空室・ご宿泊についてのお問い合わせ</p><a href={hotel.tel} class="contact-phone"><small>TEL</small><span>{hotel.phone}</span><Icon name="arrow" /></a><p class="contact-reminder">駐車場のご利用は事前にご予約ください。<br />当施設にはエレベーターがございません。</p></div></div></div></section>
+</main><footer class="footer"><div class="wrap footer-top"><a class="brand" href="#top"><span class="brand__main">Partire</span><span class="brand__sub">HAKATA HOTEL</span></a><div><p>{hotel.name}</p><p>{hotel.postal} {hotel.address} {hotel.building}</p></div><a href="#top" class="back-top" aria-label="ページの先頭へ"><Icon name="arrow" /></a></div><div class="wrap footer-bottom"><small>© {new Date().getFullYear()} Partire Hakata Hotel</small><span>HARUYOSHI, FUKUOKA</span></div></footer>
+<nav class="mobile-actions" aria-label="お問い合わせショートカット" inert><a href="#rooms">客室・料金 <Icon name="arrow" /></a><a href={hotel.tel}><Icon name="phone" /> 電話で問い合わせる</a></nav>
+<script>import '../scripts/main';</script>
+</body></html>

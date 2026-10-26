@@ -1,0 +1,6 @@
+---
+interface Props { name?: 'arrow'|'phone'|'plus'|'pin'|'chevron'|'expand'; class?:string; }
+const { name='arrow', class:className } = Astro.props;
+const paths = { arrow:'M3 12h17M14 5l7 7-7 7', phone:'M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 2a14 14 0 0 1-7-7l2-2-2-5Z', plus:'M12 4v16M4 12h16', pin:'M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0ZM15 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0', chevron:'m8 4 8 8-8 8', expand:'M9 3H3v6M15 3h6v6M3 15v6h6M21 15v6h-6' };
+---
+<svg class={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={paths[name]} /></svg>
