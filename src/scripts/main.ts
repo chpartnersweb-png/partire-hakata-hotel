@@ -23,12 +23,29 @@ setupScroll(); desktop.addEventListener('change',setupScroll);
 // Native dialogs retain focus and work with Escape. Background scroll is restored on close.
 const menu=$<HTMLDialogElement>('#site-menu');
 const lightbox=$<HTMLDialogElement>('#lightbox');
+const bookingPanel=$<HTMLDialogElement>('#booking-panel');
 const lock = () => {document.documentElement.style.overflow='hidden';lenis?.stop();};
-const unlock = () => {document.documentElement.style.overflow='';lenis?.start();};
+const unlock = () => {if([menu,lightbox,bookingPanel].some(dialog=>dialog.open))return;document.documentElement.style.overflow='';lenis?.start();};
 $('#menu-open').addEventListener('click',()=>{menu.showModal();lock();});
 $('#menu-close').addEventListener('click',()=>menu.close());
-for(const dialog of [menu,lightbox]) dialog.addEventListener('close',unlock);
+for(const dialog of [menu,lightbox,bookingPanel]) dialog.addEventListener('close',unlock);
+let bookingReturnFocus:HTMLElement|null=null;
+$$<HTMLAnchorElement>('[data-booking-open]').forEach(link=>link.addEventListener('click',event=>{
+  event.preventDefault();
+  bookingReturnFocus=menu.contains(link)?$('#menu-open'):link;
+  if(menu.open)menu.close();
+  if(!bookingPanel.open)bookingPanel.showModal();
+  lock();
+}));
+$('#booking-close').addEventListener('click',()=>bookingPanel.close());
+bookingPanel.addEventListener('close',()=>bookingReturnFocus?.focus({preventScroll:true}));
+bookingPanel.addEventListener('click',event=>{
+  if(event.target!==bookingPanel)return;
+  const bounds=bookingPanel.getBoundingClientRect();
+  if(event.clientX<bounds.left||event.clientX>bounds.right||event.clientY<bounds.top||event.clientY>bounds.bottom)bookingPanel.close();
+});
 menu.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach(link=>link.addEventListener('click',event=>{
+  if(link.hasAttribute('data-booking-open'))return;
   event.preventDefault();menu.close();const target=document.querySelector(link.hash);if(!target)return;
   requestAnimationFrame(()=>{if(lenis)lenis.scrollTo(target as HTMLElement,{offset:-95});else target.scrollIntoView({behavior:motion.matches?'instant':'smooth'});history.replaceState(null,'',link.hash);});
 }));
@@ -52,9 +69,9 @@ function loadSlide(index:number):Promise<boolean>{
   })());
   return loading.get(index)!;
 }
-function canPlay(){return !userPaused&&!hoverPaused&&!focusPaused&&heroVisible&&!document.hidden&&!motion.matches&&!menu.open&&!lightbox.open;}
+function canPlay(){return !userPaused&&!hoverPaused&&!focusPaused&&heroVisible&&!document.hidden&&!motion.matches&&!menu.open&&!lightbox.open&&!bookingPanel.open;}
 function schedule(){timer?.kill();if(canPlay())timer=gsap.delayedCall(6,()=>{const next=[1,2,3].map(n=>(slideIndex+n)%slides.length).find(n=>n!==slideIndex&&!failed.has(n));if(next!==undefined)void showSlide(next);});}
-function syncPlayback(){timer?.kill();for(const zoom of zooms.values())zoom.paused(!canPlay());crossfade?.paused(document.hidden||!heroVisible||menu.open||lightbox.open);schedule();}
+function syncPlayback(){timer?.kill();for(const zoom of zooms.values())zoom.paused(!canPlay());crossfade?.paused(document.hidden||!heroVisible||menu.open||lightbox.open||bookingPanel.open);schedule();}
 async function showSlide(next:number){
   if(busy||next===slideIndex)return;
   busy=true;
@@ -83,7 +100,7 @@ controls.addEventListener('pointerleave',()=>{hoverPaused=false;syncPlayback();}
 controls.addEventListener('focusin',()=>{focusPaused=true;syncPlayback();});
 controls.addEventListener('focusout',()=>requestAnimationFrame(()=>{focusPaused=controls.contains(document.activeElement);syncPlayback();}));
 document.addEventListener('visibilitychange',syncPlayback);
-for(const dialog of [menu,lightbox])new MutationObserver(syncPlayback).observe(dialog,{attributes:true,attributeFilter:['open']});
+for(const dialog of [menu,lightbox,bookingPanel])new MutationObserver(syncPlayback).observe(dialog,{attributes:true,attributeFilter:['open']});
 new IntersectionObserver(([entry])=>{heroVisible=entry.isIntersecting;syncPlayback();},{threshold:0}).observe(hero);
 void loadSlide(0).then(()=>{void loadSlide(1);void loadSlide(2);if(!motion.matches)zooms.set(0,gsap.fromTo(slides[0].querySelector('img'),{scale:1.025},{scale:1,duration:7.6,ease:'none',paused:!canPlay()}));schedule();});
 
@@ -92,7 +109,7 @@ new IntersectionObserver(([entry])=>{const after=entry.boundingClientRect.bottom
 
 // Room tabs and a manual photo gallery share one authoritative room/price state.
 type RoomImage={src:string;thumb:string;original:string};
-const data=JSON.parse($('#room-data').textContent!) as {images:Record<string,RoomImage[]>;prices:Record<string,{weekday:number;weekend:number}>};
+const data=JSON.parse($('#room-data').textContent!) as {images:Record<string,RoomImage[]>;prices:Record<string,{weekday:number;weekend:number}>;bookings:Record<string,string>};
 const tabs=$$<HTMLButtonElement>('[data-room]');
 const photo=$<HTMLImageElement>('#room-photo');
 const thumbs=$('#gallery-thumbs');
@@ -111,6 +128,9 @@ async function selectPhoto(index:number,nextRoom=room){
   room=nextRoom;photoIndex=next;photo.src=preload.src;photo.alt=`${room}号室の客室写真 ${next+1}`;
   if(!motion.matches)gsap.fromTo(photo,{opacity:.5},{opacity:1,duration:.35,overwrite:true});
   $('#room-number').textContent=room;$('#room-weekday').textContent=data.prices[room].weekday.toLocaleString('ja-JP');$('#room-weekend').textContent=data.prices[room].weekend.toLocaleString('ja-JP');
+  const booking=$<HTMLAnchorElement>('#room-booking');
+  booking.href=data.bookings[room];
+  booking.setAttribute('aria-label',`${room}号室をAirbnbで予約する（新しいタブで開きます）`);
   $('#photo-current').textContent=String(next+1).padStart(2,'0');$('#photo-total').textContent=String(list.length).padStart(2,'0');
   $('#room-panel').setAttribute('aria-labelledby',`tab-${room}`);$('#gallery-expand').setAttribute('aria-label',`${room}号室の写真を拡大`);
   tabs.forEach(tab=>{const active=tab.dataset.room===room;tab.classList.toggle('is-active',active);tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1;});

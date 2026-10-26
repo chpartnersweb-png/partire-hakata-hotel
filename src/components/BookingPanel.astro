@@ -1,0 +1,28 @@
+---
+import { bookingUrls, roomNumbers, roomPrice, yen } from '../data/hotel';
+import Icon from './Icon.astro';
+---
+<dialog id="booking-panel" class="booking-panel" aria-labelledby="booking-title" aria-describedby="booking-description">
+  <div class="booking-panel-head">
+    <div>
+      <p class="eyebrow">RESERVATION</p>
+      <h2 id="booking-title">ご宿泊の予約</h2>
+    </div>
+    <button id="booking-close" class="booking-close" aria-label="予約パネルを閉じる"><span aria-hidden="true">×</span></button>
+  </div>
+  <p id="booking-description">ご希望のお部屋をお選びください。<br />Airbnbで空室状況の確認・ご予約ができます。</p>
+  <div class="booking-room-grid">
+    {roomNumbers.map(number => {
+      const price = roomPrice(number);
+      return <a class="booking-room" href={bookingUrls[number]} target="_blank" rel="noopener noreferrer" aria-label={`${number}号室の空室確認・予約をAirbnbで開く（新しいタブ）`}>
+        <h3><small>ROOM</small><span>{number}</span></h3>
+        <dl>
+          <div><dt>平日</dt><dd>{yen(price.weekday)}円</dd></div>
+          <div><dt>週末</dt><dd>{yen(price.weekend)}円</dd></div>
+        </dl>
+        <span class="booking-room-action">Airbnbで予約 <Icon name="arrow" /></span>
+      </a>;
+    })}
+  </div>
+  <p class="booking-panel-note">表示は2名様までの宿泊料金です。追加人数料金・清掃費は別途かかります。<br />空室状況・ご予約内容はAirbnbでご確認ください。</p>
+</dialog>
