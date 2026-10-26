@@ -51,4 +51,6 @@ for (const [name, input] of Object.entries({ exterior:'partire-hakata-exterior-h
   await sharp(`src/assets/hero/${input}`).resize({width:1920,withoutEnlargement:true}).webp({quality:88}).toFile(`public/images/hero/${name}.webp`);
 }
 await sharp('src/assets/810880137.jpg').rotate().resize({width:1000,withoutEnlargement:true}).webp({quality:85}).toFile('public/images/exterior.webp');
+await fs.mkdir('public/images/og', { recursive:true });
+await sharp('public/images/rooms/201/01.webp').resize(1200,630,{fit:'cover',position:'centre'}).jpeg({quality:88,mozjpeg:true}).toFile('public/images/og/partire-hakata-hotel.jpg');
 await fs.writeFile('src/data/room-images.json', JSON.stringify(manifest,null,2)+'\n');

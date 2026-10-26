@@ -35,4 +35,6 @@ npm run assets:prepare
 
 ヒーローは実際の外観写真を参照した生成画像です。客室とアクセスの外観は実写を使用しています。
 
-オンライン予約先と本番URLは未設定です。現時点では電話問い合わせを使用します。
+本番URLは `https://partire-hakata-hotel.pages.dev/` に設定しています。SEO設定は `src/data/site.mjs`・`src/data/seo.ts`・`src/components/Seo.astro` に集約しています。今回のSEO変更後の確認はユーザーが行うため未実施です。詳細と公開後の手順は `docs/SEO.md` を参照してください。
+
+オンライン予約先は未設定です。現時点では電話問い合わせを使用します。

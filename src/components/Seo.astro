@@ -1,0 +1,28 @@
+---
+import { hotel } from '../data/hotel';
+import { site, absoluteUrl } from '../data/site.mjs';
+import { pageTitle, pageDescription, structuredData } from '../data/seo';
+const jsonLd = JSON.stringify(structuredData).replace(/</g, '\\u003c');
+---
+<title>{pageTitle}</title>
+<meta name="description" content={pageDescription} />
+<link rel="canonical" href={site.url} />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content={site.locale} />
+<meta property="og:site_name" content={hotel.name} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={pageDescription} />
+<meta property="og:url" content={site.url} />
+<meta property="og:image" content={absoluteUrl(site.ogImage.path)} />
+<meta property="og:image:secure_url" content={absoluteUrl(site.ogImage.path)} />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content={String(site.ogImage.width)} />
+<meta property="og:image:height" content={String(site.ogImage.height)} />
+<meta property="og:image:alt" content={site.ogImage.alt} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={pageDescription} />
+<meta name="twitter:image" content={absoluteUrl(site.ogImage.path)} />
+<meta name="twitter:image:alt" content={site.ogImage.alt} />
+<script type="application/ld+json" set:html={jsonLd} />
