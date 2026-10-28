@@ -8,15 +8,50 @@ import Price from '../components/Price.astro';
 import Services from '../components/Services.astro';
 import Access from '../components/Access.astro';
 import Icon from '../components/Icon.astro';
-import {hotel,roomNumbers,bookingUrls} from '../data/hotel';
+import { hotel, roomNumbers, bookingUrls } from '../data/hotel';
 import '../styles/global.css';
 ---
-<!doctype html><html lang="ja"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /><meta name="theme-color" content="#f5f2ec" /><link rel="icon" type="image/svg+xml" href="/favicon.svg" /><link rel="preload" as="image" href="/images/hero/exterior.webp" fetchpriority="high" /><Seo /></head><body>
-<Header /><main id="main"><Hero />
-<section id="intro" class="intro section-pad"><div class="wrap"><div class="intro-copy" data-reveal><p class="eyebrow">A STAY IN HARUYOSHI, FUKUOKA</p><div class="intro-columns"><h2>街を歩く時間も、<br />くつろぐ時間も。</h2><div><p>キャナルシティ博多まで、歩いて3分。<br />天神南駅と櫛田神社前駅からも、歩いて約8分。</p><p>福岡市中央区・春吉にある<br />パルティーレ博多ホテル。<br />街を楽しむ旅の拠点に、お迎えします。</p></div></div></div><div class="walk-distances" data-reveal><a href="#access"><span>キャナルシティ博多</span><p>徒歩 <b>3</b><span>分</span></p><Icon name="arrow" /></a><a href="#access"><span>天神南駅</span><p>徒歩 約<b>8</b><span>分</span></p><Icon name="arrow" /></a><a href="#access"><span>櫛田神社前駅</span><p>徒歩 約<b>8</b><span>分</span></p><Icon name="arrow" /></a></div></div></section>
-<Rooms /><Price /><Services /><Access />
-<section class="contact section-pad" id="contact"><div class="wrap" data-reveal><p class="eyebrow">RESERVATION & CONTACT</p><div class="contact-body"><h2>次の旅を、<br />春吉から。</h2><div><p>ご予約・空室の確認</p><a href="#contact" class="booking-choice" data-booking-open aria-haspopup="dialog" aria-controls="booking-panel">空室確認・ご予約 <Icon name="arrow" /></a><p class="booking-guide">お部屋を選んで、Airbnbで空室確認・ご予約へ。</p><div class="contact-room-links" aria-label="客室別Airbnb予約リンク">{roomNumbers.map(number=><a href={bookingUrls[number]} target="_blank" rel="noopener noreferrer" aria-label={`${number}号室をAirbnbで予約する（新しいタブ）`}><span>ROOM {number}</span><Icon name="arrow" /></a>)}</div><a href={hotel.tel} class="contact-phone"><small>TEL</small><span>{hotel.phone}</span><Icon name="arrow" /></a><p class="contact-reminder">駐車場のご利用は事前にご予約ください。<br />当施設にはエレベーターがございません。</p></div></div></div></section>
-</main><footer class="footer"><div class="wrap footer-top"><a class="brand" href="#top"><span class="brand__main">Partire</span><span class="brand__sub">HAKATA HOTEL</span></a><div><p>{hotel.name}</p><p>{hotel.postal} {hotel.address} {hotel.building}</p></div><a href="#top" class="back-top" aria-label="ページの先頭へ"><Icon name="arrow" /></a></div><div class="wrap footer-bottom"><small>© {new Date().getFullYear()} Partire Hakata Hotel</small><span>HARUYOSHI, FUKUOKA</span></div></footer>
-<a class="desktop-booking" href="#contact" data-booking-open aria-haspopup="dialog" aria-controls="booking-panel"><small>RESERVATION</small><span>予約する</span></a><nav class="mobile-actions" aria-label="予約・電話ショートカット" inert><a href="#contact" data-booking-open aria-haspopup="dialog" aria-controls="booking-panel">空室確認・ご予約 <Icon name="arrow" /></a><a href={hotel.tel}><Icon name="phone" /> 電話する</a></nav><BookingPanel />
-<script>import '../scripts/main';</script>
-</body></html>
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f5f2ec" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" as="image" href="/images/hero/exterior.webp" fetchpriority="high" />
+    <Seo />
+  </head>
+  <body>
+    <Header />
+    <main id="main">
+      <Hero />
+      <section id="intro" class="intro section-pad"><div class="wrap"><div class="intro-copy" data-reveal><p class="eyebrow">A STAY IN HARUYOSHI, FUKUOKA</p><div class="intro-columns"><h2>街を歩く時間も、<br />くつろぐ時間も。</h2><div><p>キャナルシティ博多まで、歩いて3分。<br />天神南駅と櫛田神社前駅からも、歩いて約8分。</p><p>福岡市中央区・春吉にある<br />パルティーレ博多ホテル。<br />街を楽しむ旅の拠点に、お迎えします。</p></div></div></div><div class="walk-distances" data-reveal><a href="#access"><span>キャナルシティ博多</span><p>徒歩 <b>3</b><span>分</span></p><Icon name="arrow" /></a><a href="#access"><span>天神南駅</span><p>徒歩 約<b>8</b><span>分</span></p><Icon name="arrow" /></a><a href="#access"><span>櫛田神社前駅</span><p>徒歩 約<b>8</b><span>分</span></p><Icon name="arrow" /></a></div></div></section>
+      <Rooms /><Price /><Services /><Access />
+      <section class="contact section-pad" id="contact">
+        <div class="wrap" data-reveal>
+          <p class="eyebrow">RESERVATION & CONTACT</p><div class="contact-body">
+            <h2>次の旅を、<br />春吉から。</h2><div>
+              <p>ご予約・空室の確認</p><a href="#contact" class="booking-choice" data-booking-open aria-haspopup="dialog" aria-controls="booking-panel">空室確認・ご予約 <Icon name="arrow" /></a><p class="booking-guide">お部屋を選んで、Airbnbで空室確認・ご予約へ。</p><div class="contact-room-links" aria-label="客室別Airbnb予約リンク">
+                {
+                  roomNumbers.map((number) => (
+                    <a href={bookingUrls[number]} target="_blank" rel="noopener noreferrer" aria-label={`${number}号室をAirbnbで予約する（新しいタブ）`}>
+                      <>
+                        <span>ROOM {number}</span>
+                        <Icon name="arrow" />
+                      </>
+                    </a>
+                  ))
+                }
+              </div><a href={hotel.tel} class="contact-phone"><small>TEL</small><span>{hotel.phone}</span><Icon name="arrow" /></a><p class="contact-reminder">駐車場のご利用は事前にご予約ください。<br />当施設にはエレベーターがございません。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main><footer class="footer"><div class="wrap footer-top"><a class="brand" href="#top"><span class="brand__main">Partire</span><span class="brand__sub">HAKATA HOTEL</span></a><div><p>{hotel.name}</p><p>{hotel.postal} {hotel.address} {hotel.building}</p></div><a href="#top" class="back-top" aria-label="ページの先頭へ"><Icon name="arrow" /></a></div><div class="wrap footer-bottom"><small>© {new Date().getFullYear()} Partire Hakata Hotel</small><span>HARUYOSHI, FUKUOKA</span></div></footer>
+    <a class="desktop-booking" href="#contact" data-booking-open aria-haspopup="dialog" aria-controls="booking-panel"><small>RESERVATION</small><span>予約する</span></a><nav class="mobile-actions" aria-label="予約・電話ショートカット" inert><a href="#contact" data-booking-open aria-haspopup="dialog" aria-controls="booking-panel">空室確認・ご予約 <Icon name="arrow" /></a><a href={hotel.tel}><Icon name="phone" /> 電話する</a></nav><BookingPanel />
+    <script>
+      import '../scripts/main';
+    </script>
+  </body>
+</html>
